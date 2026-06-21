@@ -11,10 +11,19 @@ Depois de instalado, ficam disponíveis em **qualquer pasta**:
 
 ## Como instalar
 
-No Claude Code:
+**Passo 1 — Pré-requisito no terminal (uma vez por máquina):**
+
+```bash
+git config --global url."https://github.com/".insteadOf "git@github.com:"
+git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+```
+
+Isso faz o git usar HTTPS em vez de SSH para GitHub (necessário para o Claude Code clonar o plugin).
+
+**Passo 2 — No Claude Code:**
 
 ```
-/plugin marketplace add https://github.com/Inntd/plugin-para-criar-app
+/plugin marketplace add Inntd/plugin-para-criar-app
 /plugin install criar-app@criar-app-marketplace
 ```
 

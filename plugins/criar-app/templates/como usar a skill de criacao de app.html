@@ -231,18 +231,22 @@
 
       <div class="install">
         <div class="reveal">
-          <h3><span class="step-n">1</span>Instale o plugin (uma vez)</h3>
-          <p class="sub">No Claude Code, duas linhas — o primeiro comando busca o plugin direto do GitHub, o segundo instala.</p>
-<div class="codeblock"><span class="c"># adiciona o marketplace via GitHub</span>
-/plugin marketplace add <span class="tok">https://github.com/Inntd/plugin-para-criar-app</span>
+          <h3><span class="step-n">1</span>Pré-requisito no terminal (uma vez por máquina)</h3>
+          <p class="sub">Configure o git para usar HTTPS em vez de SSH no GitHub. Sem isso, o Claude Code não consegue clonar o plugin.</p>
+<div class="codeblock">git config --global url.<span class="tok">"https://github.com/"</span>.insteadOf <span class="tok">"git@github.com:"</span>
+git config --global url.<span class="tok">"https://github.com/"</span>.insteadOf <span class="tok">"ssh://git@github.com/"</span></div>
+        </div>
 
-<span class="c"># instala o plugin</span>
+        <div class="reveal">
+          <h3><span class="step-n">2</span>Instale o plugin no Claude Code</h3>
+          <p class="sub">Duas linhas — a primeira registra o marketplace direto do GitHub, a segunda instala.</p>
+<div class="codeblock">/plugin marketplace add <span class="tok">Inntd/plugin-para-criar-app</span>
 /plugin install <span class="tok">criar-app@criar-app-marketplace</span></div>
           <div class="note-amber"><b>Dica:</b> confirme com <span class="mono">/plugin</span> (deve aparecer <b>criar-app</b> como <i>enabled</i>) e digite <span class="mono">/</span> para ver os comandos.</div>
         </div>
 
         <div class="reveal">
-          <h3><span class="step-n">2</span>Crie um app novo</h3>
+          <h3><span class="step-n">3</span>Crie um app novo</h3>
           <p class="sub">Abra o Claude Code numa <b>pasta vazia</b> e rode o comando — ele copia <span class="mono">CLAUDE.md</span>, os arquivos de estado, <span class="mono">docs/</span> e a camada determinística (<span class="mono">.claude/settings.json</span> + hooks) para a pasta.</p>
 <div class="codeblock"><span class="c"># dentro da pasta do app novo</span>
 /novo-projeto
