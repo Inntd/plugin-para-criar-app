@@ -1,5 +1,4 @@
 ---
-name: novo-projeto
 description: Cria o esqueleto completo de um app novo (CLAUDE.md, arquivos de estado, docs e camada deterministica) na pasta atual, a partir do template do plugin criar-app.
 allowed-tools: Bash, Read
 ---
@@ -41,5 +40,5 @@ echo "=== RESULTADO ==="; ls -A
 Verifique que foram criados: `CLAUDE.md`, `PROBLEMA.md`, `TASKS.md`, `PROGRESS.md`, `REGRAS-DE-NEGOCIO.md`, `MAPA.md`, `docs/`, `.claude/settings.json` e `.claude/hooks/`.
 
 Depois diga ao usuário, curto:
-- **Estrutura criada:** comandos em `.claude/commands/`, subagentes em `.claude/agents/`, skill em `.claude/skills/`, guardrails em `.claude/settings.json` + `.claude/hooks/`.
-- **Próximo passo:** rode `git init` (se ainda não houver repo), edite o `CLAUDE.md` trocando `<nome do projeto>` e a descrição do app, e comece com `/problema` para definir a dor que o app resolve.
+- **Comandos, subagentes e a skill** já vêm do plugin (globais) — por isso não há `commands/`, `agents/` nem `skills/` na pasta; só a camada determinística (`settings.json` + hooks) é local.
+- **Próximo passo:** rode `git init` (se ainda não houver repo) e depois `/problema` para definir a dor que o app resolve. Edite o `CLAUDE.md` trocando `<nome do projeto>` e a descrição do app.
