@@ -2,6 +2,22 @@
 
 > Defina aqui a **stack completa**. Isto é o **passo zero**: enquanto estiver em branco, as 14 regras de código (`docs/REGRAS-DE-CODIGO.md`) ficam em modo "se aplicável" e o agente assume coisas. Preenchido, as regras que citam tecnologia passam a valer de forma concreta. O *porquê* de cada escolha vai num ADR em `docs/decisoes/`.
 
+## Estrutura do repositório
+
+> **Monorepo é a estrutura recomendada** para apps criados com este harness e o Claude Code. Concentra todo o contexto (front, back, infra, docs) num único repo, o que permite ao agente navegar, rastrear dependências e manter a cadeia Problema → Regras → Specs → Código coerente sem saltar entre repositórios.
+
+- Estrutura: `monorepo` | `multi-repo` (justifique multi-repo num ADR se escolher)
+- Gerenciador de workspace (se monorepo): ____ (ex.: pnpm workspaces, Turborepo, Nx, Cargo workspaces)
+- Pastas principais:
+  ```
+  /apps/web        ← front-end
+  /apps/api        ← back-end / API
+  /packages/       ← libs compartilhadas (ui, utils, tipos)
+  /infra/          ← IaC, scripts de deploy
+  /docs/           ← documentação (já existe neste template)
+  ```
+- Convenção de commit: ____ (ex.: Conventional Commits com escopo por workspace — `feat(web):`, `fix(api):`)
+
 ## Front-end
 - Framework / linguagem: ____
 - Estilo / UI: ____
