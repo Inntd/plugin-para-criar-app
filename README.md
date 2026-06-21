@@ -14,11 +14,9 @@ Depois de instalado, ficam disponíveis em **qualquer pasta**:
 No Claude Code:
 
 ```
-/plugin marketplace add "E:\Google Drive INNTD\...\plugin-para-criar-app"
+/plugin marketplace add Inntd/plugin-para-criar-app
 /plugin install criar-app@criar-app-marketplace
 ```
-
-> Use o caminho **da pasta `plugin-para-criar-app`** (a que contém `.claude-plugin/marketplace.json`). Se você publicar num repositório Git, pode usar a URL no lugar do caminho local: `/plugin marketplace add usuario/repo`.
 
 Confirme com `/plugin` (deve aparecer `criar-app` como enabled) e digite `/` para ver os comandos.
 

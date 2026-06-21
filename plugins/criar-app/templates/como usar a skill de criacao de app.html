@@ -232,13 +232,13 @@
       <div class="install">
         <div class="reveal">
           <h3><span class="step-n">1</span>Instale o plugin (uma vez)</h3>
-          <p class="sub">No Claude Code, adicione o marketplace e instale. Use o caminho da pasta <span class="mono">plugin-para-criar-app</span> (a que contém <span class="mono">.claude-plugin/marketplace.json</span>).</p>
-<div class="codeblock"><span class="c"># adiciona o marketplace (caminho local)</span>
-/plugin marketplace add <span class="tok">"E:\…\plugin-para-criar-app"</span>
+          <p class="sub">No Claude Code, duas linhas — o primeiro comando busca o plugin direto do GitHub, o segundo instala.</p>
+<div class="codeblock"><span class="c"># adiciona o marketplace via GitHub</span>
+/plugin marketplace add <span class="tok">Inntd/plugin-para-criar-app</span>
 
 <span class="c"># instala o plugin</span>
 /plugin install <span class="tok">criar-app@criar-app-marketplace</span></div>
-          <div class="note-amber"><b>Dica:</b> confirme com <span class="mono">/plugin</span> (deve aparecer <b>criar-app</b> como <i>enabled</i>) e digite <span class="mono">/</span> para ver os comandos. Publicou num repositório Git? Troque o caminho pela URL: <span class="mono">/plugin marketplace add usuario/repo</span>.</div>
+          <div class="note-amber"><b>Dica:</b> confirme com <span class="mono">/plugin</span> (deve aparecer <b>criar-app</b> como <i>enabled</i>) e digite <span class="mono">/</span> para ver os comandos.</div>
         </div>
 
         <div class="reveal">
