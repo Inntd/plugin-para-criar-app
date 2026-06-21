@@ -227,7 +227,7 @@
     <div class="wrap">
       <p class="sec-eyebrow">Antes de tudo</p>
       <h2>Instalar o plugin <code style="font-family:var(--mono);font-size:.7em;color:var(--amber)">criar-app</code></h2>
-      <p class="intro">Todo o harness (15 comandos, 6 subagentes e a skill <span class="mono">principios-de-codigo</span>) vem empacotado como um <b>plugin do Claude Code</b>. Instale uma vez — vale em qualquer pasta. Depois, <span class="mono">/novo-projeto</span> gera o esqueleto de cada app novo.</p>
+      <p class="intro">Todo o harness (15 comandos, 6 subagentes e a skill <span class="mono">principios-de-codigo</span>) vem empacotado como um <b>plugin do Claude Code</b>. Instale uma vez por máquina. Depois, <span class="mono">/criar-app:novo-projeto</span> copia tudo para a pasta do app — e a partir daí <b>todos os comandos funcionam sem prefixo</b>.</p>
 
       <div class="install">
         <div class="reveal">
@@ -242,19 +242,21 @@ git config --global url.<span class="tok">"https://github.com/"</span>.insteadOf
           <p class="sub">Duas linhas — a primeira registra o marketplace direto do GitHub, a segunda instala.</p>
 <div class="codeblock">/plugin marketplace add <span class="tok">Inntd/plugin-para-criar-app</span>
 /plugin install <span class="tok">criar-app@criar-app-marketplace</span></div>
-          <div class="note-amber"><b>Dica:</b> confirme com <span class="mono">/plugin</span> (deve aparecer <b>criar-app</b> como <i>enabled</i>) e digite <span class="mono">/</span> para ver os comandos.</div>
+          <div class="note-amber"><b>Dica:</b> confirme com <span class="mono">/plugin</span> (deve aparecer <b>criar-app</b> como <i>enabled</i>).</div>
         </div>
 
         <div class="reveal">
-          <h3><span class="step-n">3</span>Crie um app novo</h3>
-          <p class="sub">Abra o Claude Code numa <b>pasta vazia</b> e rode o comando — ele copia <span class="mono">CLAUDE.md</span>, os arquivos de estado, <span class="mono">docs/</span> e a camada determinística (<span class="mono">.claude/settings.json</span> + hooks) para a pasta.</p>
-<div class="codeblock"><span class="c"># dentro da pasta do app novo</span>
-/novo-projeto
-
-<span class="c"># depois:</span>
-git init
-/problema   <span class="c"># define a dor que o app resolve</span></div>
-          <div class="note-amber"><b>Por que dividido assim:</b> comandos, subagentes e skill vêm do <b>plugin</b> (atualiza num lugar só, todos os apps herdam). Já a camada determinística é copiada <b>local</b> em cada app — guardrails autocontidos, sem disparar checkpoints em repositórios não relacionados.</div>
+          <h3><span class="step-n">3</span>Inicialize cada app novo (uma vez por projeto)</h3>
+          <p class="sub">Abra o Claude Code numa <b>pasta vazia</b> e rode — este é o único comando com prefixo:</p>
+<div class="codeblock">/criar-app:novo-projeto</div>
+          <p class="sub" style="margin-top:10px">Isso instala na pasta: <span class="mono">CLAUDE.md</span>, arquivos de estado, <span class="mono">docs/</span>, <span class="mono">.claude/commands/</span> (15 comandos), <span class="mono">.claude/agents/</span> (6 subagentes), <span class="mono">.claude/skills/</span> e guardrails. A partir daí <b>tudo funciona sem prefixo</b>:</p>
+<div class="codeblock">git init
+/problema   <span class="c"># define a dor que o app resolve</span>
+/dividir    <span class="c"># quebra objetivo em tarefas</span>
+/regra      <span class="c"># registra regras de negócio</span>
+/spec       <span class="c"># formaliza funcionalidades</span>
+/provar     <span class="c"># prova que a spec foi cumprida</span></div>
+          <div class="note-amber"><b>Por que assim:</b> o plugin instala tudo localmente no projeto — comandos, subagentes e skill ficam em <span class="mono">.claude/</span> junto com os guardrails, portáteis e autocontidos em cada repositório.</div>
         </div>
       </div>
     </div>
@@ -267,15 +269,16 @@ git init
       <h2>Como começar um app</h2>
       <p class="intro">A ordem importa: define-se a base, entende-se a dor, e só então se constrói — em blocos pequenos. Cada passo abaixo é um comando ou um arquivo do template.</p>
       <div class="road">
-        <div class="step start reveal"><span class="num">0</span><h4>Defina a base</h4><p>Preencha <code>docs/STACK.md</code> (stack completa) e <code>docs/SETUP.md</code> + <code>.env.example</code> (rodar e ambientes). Isso ativa as regras de código certas.</p></div>
-        <div class="step reveal"><span class="num">1</span><h4>Entenda a dor — <code>/problema</code></h4><p>Articule a dor na voz de quem sofre, evidências e a suposição mais arriscada a validar antes de construir.</p></div>
-        <div class="step reveal"><span class="num">2</span><h4>Quebre o objetivo — <code>/dividir</code></h4><p>Marcos → tarefas pequenas com prioridade e critério de sucesso, gravados no <code>TASKS.md</code>.</p></div>
-        <div class="step reveal"><span class="num">3</span><h4>Registre regras — <code>/regra</code></h4><p>Cada regra de negócio é gravada <b>e propaga pela cadeia</b>: propõe specs, regras de código e onde entram âncoras.</p></div>
-        <div class="step reveal"><span class="num">4</span><h4>Formalize — <code>/spec</code></h4><p>Crie a spec da funcionalidade listando as regras (RN-00x) que a sustentam.</p></div>
-        <div class="step reveal"><span class="num">5</span><h4>Construa com âncoras</h4><p>Código enxuto seguindo os princípios e as regras; a LLM deixa âncoras <code>COMENT-AI</code> no ato, só onde há intenção não óbvia.</p></div>
-        <div class="step reveal"><span class="num">6</span><h4>Especialize se preciso — <code>/adicionar-subagente</code></h4><p>Crie um subagente quando faltar um especialista (busca, auditoria…). Não invente o que não serve à dor.</p></div>
-        <div class="step reveal"><span class="num">7</span><h4>Prove — <code>/provar</code></h4><p>O subagente <code>avaliador</code> marca cada critério de aceite (implementado + testado, com arquivo:linha) e dá uma nota. Critério sem teste não passa.</p></div>
-        <div class="step reveal"><span class="num">8</span><h4>Feche coerente — <code>/reconciliar</code> + <code>revisor</code></h4><p>Atualiza o MAPA, valida frontmatter e religa tudo; o <code>revisor</code> confere regras, spec e âncoras antes de concluir.</p></div>
+        <div class="step start reveal"><span class="num">0</span><h4>Inicialize o projeto — <code>/criar-app:novo-projeto</code></h4><p>Numa pasta vazia, rode este único comando com prefixo. Ele copia para a pasta <span style="font-family:var(--mono);font-size:.9em">.claude/commands/</span> (15 comandos), <span style="font-family:var(--mono);font-size:.9em">.claude/agents/</span> (6 subagentes), <span style="font-family:var(--mono);font-size:.9em">.claude/skills/</span>, guardrails e os arquivos de estado. Depois disso, tudo funciona sem prefixo.</p></div>
+        <div class="step reveal"><span class="num">1</span><h4>Defina a base</h4><p>Preencha <code>docs/STACK.md</code> (stack completa) e <code>docs/SETUP.md</code> + <code>.env.example</code> (rodar e ambientes). Isso ativa as regras de código certas.</p></div>
+        <div class="step reveal"><span class="num">2</span><h4>Entenda a dor — <code>/problema</code></h4><p>Articule a dor na voz de quem sofre, evidências e a suposição mais arriscada a validar antes de construir.</p></div>
+        <div class="step reveal"><span class="num">3</span><h4>Quebre o objetivo — <code>/dividir</code></h4><p>Marcos → tarefas pequenas com prioridade e critério de sucesso, gravados no <code>TASKS.md</code>.</p></div>
+        <div class="step reveal"><span class="num">4</span><h4>Registre regras — <code>/regra</code></h4><p>Cada regra de negócio é gravada <b>e propaga pela cadeia</b>: propõe specs, regras de código e onde entram âncoras.</p></div>
+        <div class="step reveal"><span class="num">5</span><h4>Formalize — <code>/spec</code></h4><p>Crie a spec da funcionalidade listando as regras (RN-00x) que a sustentam.</p></div>
+        <div class="step reveal"><span class="num">6</span><h4>Construa com âncoras</h4><p>Código enxuto seguindo os princípios e as regras; a LLM deixa âncoras <code>COMENT-AI</code> no ato, só onde há intenção não óbvia.</p></div>
+        <div class="step reveal"><span class="num">7</span><h4>Especialize se preciso — <code>/adicionar-subagente</code></h4><p>Crie um subagente quando faltar um especialista (busca, auditoria…). Não invente o que não serve à dor.</p></div>
+        <div class="step reveal"><span class="num">8</span><h4>Prove — <code>/provar</code></h4><p>O subagente <code>avaliador</code> marca cada critério de aceite (implementado + testado, com arquivo:linha) e dá uma nota. Critério sem teste não passa.</p></div>
+        <div class="step reveal"><span class="num">9</span><h4>Feche coerente — <code>/reconciliar</code> + <code>revisor</code></h4><p>Atualiza o MAPA, valida frontmatter e religa tudo; o <code>revisor</code> confere regras, spec e âncoras antes de concluir.</p></div>
         <div class="step loopstep reveal"><span class="num">↺</span><h4>Descoberta contínua</h4><p>Aprendeu algo conversando ou medindo? Volta ao <code>/problema</code>. A cadeia é viva.</p></div>
       </div>
     </div>
@@ -285,8 +288,13 @@ git init
   <section class="section" id="comandos">
     <div class="wrap">
       <p class="sec-eyebrow">Manual de comandos</p>
-      <h2>Os 13 comandos</h2>
-      <p class="intro">Comandos são atalhos que você digita no Claude Code (arquivos em <span class="mono">.claude/commands/</span>). Cada um faz uma coisa e diz quando usar.</p>
+      <h2>Os 15 comandos</h2>
+      <p class="intro">Após rodar <span class="mono">/criar-app:novo-projeto</span>, estes 15 comandos ficam em <span class="mono">.claude/commands/</span> do projeto e funcionam <b>sem prefixo</b>. Cada um faz uma coisa e diz quando usar.</p>
+
+      <div class="grouplabel">Instalação &amp; início</div>
+      <div class="cards">
+        <div class="card reveal"><div class="cmd">/novo-projeto</div><p class="what">Inicializa o harness na pasta atual: copia arquivos de estado, docs, .claude/ e guardrails. Use via <span class="mono">/criar-app:novo-projeto</span> na primeira vez (antes de existir .claude/commands/).</p><p class="when"><b>quando</b> ao criar um app novo</p></div>
+      </div>
 
       <div class="grouplabel">Descoberta &amp; planejamento</div>
       <div class="cards">
@@ -315,6 +323,7 @@ git init
         <div class="card reveal"><div class="cmd">/mapa</div><p class="what">Regenera o MAPA.md — o índice de navegação do projeto.</p><p class="when"><b>quando</b> depois de criar ou mover coisas</p></div>
         <div class="card reveal"><div class="cmd">/reconciliar <span class="arg">[o que mudou]</span></div><p class="what">Após mudanças (até manuais), atualiza o MAPA, valida frontmatter e aponta inconsistências.</p><p class="when"><b>quando</b> depois de editar .claude/ na mão</p></div>
         <div class="card reveal"><div class="cmd">/custo</div><p class="what">Custo/uso de tokens da sessão e onde se gasta mais — usa o <span class="mono">/usage</span> nativo + <span class="mono">ccusage</span>.</p><p class="when"><b>quando</b> para acompanhar gasto e achar pontos caros</p></div>
+        <div class="card reveal"><div class="cmd">/ajuda</div><p class="what">Lista os comandos disponíveis e explica o fluxo do harness. Útil em sessões novas ou para quem está chegando ao projeto.</p><p class="when"><b>quando</b> ao entrar no projeto pela primeira vez</p></div>
       </div>
     </div>
   </section>
@@ -375,7 +384,7 @@ git init
         <div class="doc reveal"><span class="f">docs/REGRAS-DE-CODIGO.md</span><span class="d">14 regras de engenharia</span></div>
         <div class="doc reveal"><span class="f">.claude/hooks/</span><span class="d">checkpoint (Stop) · retomada (SessionStart) · block-dangerous (PreToolUse)</span></div>
         <div class="doc reveal"><span class="f">.claude/settings.json</span><span class="d">permissions (nega segredos, confirma push) + hooks</span></div>
-        <div class="doc reveal"><span class="f">.claude/commands/</span><span class="d">os 11 comandos</span></div>
+        <div class="doc reveal"><span class="f">.claude/commands/</span><span class="d">os 15 comandos (instalados pelo /criar-app:novo-projeto)</span></div>
         <div class="doc reveal"><span class="f">.claude/agents/</span><span class="d">os subagentes</span></div>
         <div class="doc reveal"><span class="f">.claude/skills/</span><span class="d">skills do projeto</span></div>
       </div>
