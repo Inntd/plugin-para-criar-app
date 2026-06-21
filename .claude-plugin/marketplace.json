@@ -1,0 +1,16 @@
+{
+  "name": "criar-app-marketplace",
+  "owner": {
+    "name": "Fabiano Schincariol"
+  },
+  "metadata": {
+    "description": "Marketplace do harness 'criar-app' — metodo de construcao de apps web com a cadeia viva Problema -> Regras -> Specs -> Skills/Subagentes -> Codigo."
+  },
+  "plugins": [
+    {
+      "name": "criar-app",
+      "source": "./plugins/criar-app",
+      "description": "15 comandos, 6 subagentes, skill de principios e o comando /novo-projeto que cria o esqueleto completo de um app novo."
+    }
+  ]
+}

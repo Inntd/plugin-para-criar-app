@@ -1,0 +1,9 @@
+{
+  "name": "criar-app",
+  "version": "1.0.0",
+  "description": "Harness para criar apps web com a cadeia viva Problema -> Regras -> Specs -> Skills/Subagentes -> Codigo. Traz 15 comandos (incluindo /novo-projeto), 6 subagentes e a skill principios-de-codigo. Rode /novo-projeto numa pasta vazia para gerar o esqueleto completo (CLAUDE.md, arquivos de estado, docs e camada deterministica).",
+  "author": {
+    "name": "Fabiano Schincariol"
+  },
+  "keywords": ["harness", "scaffold", "specs", "agentes", "skills", "template"]
+}

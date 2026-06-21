@@ -1,0 +1,27 @@
+# Segredos — NUNCA versionar
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets/
+
+# Dependências / build
+node_modules/
+dist/
+build/
+.venv/
+__pycache__/
+*.pyc
+
+# SO / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs locais
+*.log
+
+# Claude Code (dados de sessão pessoais; mantenha settings/commands/agents/skills versionados)
+# .claude/settings.local.json

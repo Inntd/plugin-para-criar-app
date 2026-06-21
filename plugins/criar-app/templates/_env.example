@@ -1,0 +1,19 @@
+# .env.example — copie para .env e preencha. NUNCA comite segredos reais (.env é ignorado pelo git).
+# Ambientes separados (Lei 13): use bancos distintos por ambiente; prefixos DEV_/STAGING_/PROD_ quando fizer sentido.
+
+# --- App ---
+APP_ENV=development                 # development | staging | production
+APP_URL=http://localhost:3000
+
+# --- Banco de dados (um banco por ambiente) ---
+DATABASE_URL=                       # ex.: postgresql://user:pass@localhost:5432/app_dev
+
+# --- Sessão / auth (gere valor forte; não reaproveite entre ambientes) ---
+SESSION_SECRET=
+
+# --- Provedores de IA (se aplicável; criptografar em repouso se persistir no banco) ---
+# OPENAI_API_KEY=
+# ANTHROPIC_API_KEY=
+
+# --- Integrações externas (pagamento, e-mail, storage...) ---
+# STRIPE_API_KEY=

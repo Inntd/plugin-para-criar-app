@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="nojs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline do App Template — Manual</title>
+<script>document.documentElement.className="js";</script>
+<style>
+  :root{
+    --bg:#16131F; --bg2:#1E1A2B; --bg3:#272140; --line:#352E4D;
+    --ink:#ECE8F4; --muted:#9F97B6; --faint:#6E6788;
+    --amber:#F6B83C; --lilac:#8E7DF4; --mint:#46E0B8;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(60vw 50vh at 78% -8%, rgba(246,184,60,.10), transparent 60%),
+      radial-gradient(55vw 50vh at 12% 8%, rgba(142,125,244,.12), transparent 60%);}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;position:relative;z-index:1}
+  a{color:inherit}
+  /* ---------- topbar ---------- */
+  .top{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);
+    background:rgba(22,19,31,.72);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:16px}
+  .brand{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .brand b{color:var(--amber);font-weight:600}
+  .nav{display:flex;gap:20px;font-family:var(--mono);font-size:12.5px;letter-spacing:.03em}
+  .nav a{color:var(--muted);text-decoration:none;transition:color .2s}
+  .nav a:hover,.nav a:focus-visible{color:var(--ink)}
+  @media(max-width:760px){.nav{display:none}}
+  /* ---------- hero ---------- */
+  .hero{padding:76px 0 40px}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--amber);margin:0 0 18px}
+  h1{font-size:clamp(34px,6vw,62px);line-height:1.03;letter-spacing:-.025em;font-weight:800;margin:0 0 22px}
+  h1 .grad{background:linear-gradient(100deg,var(--amber),var(--lilac));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{font-size:clamp(16px,2.1vw,19px);color:var(--muted);max-width:62ch;margin:0}
+  .lead b{color:var(--ink);font-weight:600}
+  .herogrid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  @media(max-width:860px){.herogrid{grid-template-columns:1fr;gap:36px}}
+  /* ---------- a cadeia (signature) ---------- */
+  .chain{position:relative;padding:8px 0 8px 6px}
+  .spine{position:absolute;left:23px;top:26px;bottom:26px;width:3px;border-radius:3px;
+    background:linear-gradient(var(--amber),var(--lilac));opacity:.55}
+  .pulse{position:absolute;left:18px;width:13px;height:13px;border-radius:50%;
+    background:var(--amber);box-shadow:0 0 14px 4px rgba(246,184,60,.6);opacity:0}
+  .node{position:relative;display:flex;gap:16px;align-items:flex-start;padding:13px 0;z-index:1}
+  .dot{flex:0 0 auto;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+    background:var(--bg2);border:1px solid var(--line);font-family:var(--mono);font-size:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,.35)}
+  .node h3{margin:0;font-size:15.5px;letter-spacing:-.01em}
+  .node p{margin:2px 0 0;color:var(--muted);font-size:13.5px;line-height:1.45}
+  .node .tag{font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .loop{position:absolute;left:-30px;top:18px;bottom:18px;width:30px;color:var(--lilac);opacity:.8}
+  .loop text{font-family:var(--mono);font-size:9px;fill:var(--lilac);letter-spacing:.05em}
+  @media(max-width:520px){.loop{display:none}}
+  /* ---------- sections ---------- */
+  .section{padding:60px 0;border-top:1px solid var(--line)}
+  .sec-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--lilac);margin:0 0 10px}
+  .section h2{font-size:clamp(24px,3.6vw,34px);letter-spacing:-.02em;font-weight:800;margin:0 0 12px}
+  .section .intro{color:var(--muted);max-width:64ch;margin:0 0 34px}
+  /* ---------- roadmap ---------- */
+  .road{position:relative;margin-left:6px;padding-left:34px}
+  .road::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(var(--amber),var(--lilac) 70%,var(--mint))}
+  .step{position:relative;padding:0 0 26px}
+  .step:last-child{padding-bottom:0}
+  .step .num{position:absolute;left:-34px;top:0;width:24px;height:24px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--lilac);color:var(--ink);font-family:var(--mono);
+    font-size:11px;display:grid;place-items:center;font-weight:600}
+  .step.start .num{border-color:var(--amber)}
+  .step.loopstep .num{border-color:var(--mint);color:var(--mint)}
+  .step h4{margin:0 0 3px;font-size:15.5px;letter-spacing:-.01em}
+  .step code{font-family:var(--mono);font-size:13px;color:var(--amber);background:rgba(246,184,60,.09);
+    padding:1px 7px;border-radius:6px;border:1px solid rgba(246,184,60,.18)}
+  .step p{margin:5px 0 0;color:var(--muted);font-size:13.5px}
+  /* ---------- command groups + cards ---------- */
+  .grouplabel{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--faint);margin:30px 0 14px;display:flex;align-items:center;gap:10px}
+  .grouplabel::after{content:"";flex:1;height:1px;background:var(--line)}
+  .grouplabel:first-of-type{margin-top:0}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:14px}
+  .card{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:17px 17px 16px;
+    transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+  .card:hover{transform:translateY(-4px);border-color:#4a4068;box-shadow:0 14px 30px rgba(0,0,0,.4)}
+  .cmd{font-family:var(--mono);font-size:14.5px;color:var(--amber);font-weight:600}
+  .cmd .arg{color:var(--faint);font-weight:400}
+  .card .what{margin:9px 0 0;font-size:14px}
+  .card .when{margin:9px 0 0;font-size:12.5px;color:var(--muted)}
+  .card .when b{color:var(--lilac);font-weight:600;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+  .card .ex{margin:10px 0 0;font-family:var(--mono);font-size:11.5px;color:var(--muted);
+    background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 9px;overflow-x:auto;white-space:nowrap}
+  .card .ex::before{content:"› ";color:var(--mint)}
+  /* ---------- agents ---------- */
+  .agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .agent{background:linear-gradient(180deg,var(--bg2),rgba(30,26,43,.4));border:1px solid var(--line);
+    border-radius:14px;padding:16px}
+  .agent .name{font-family:var(--mono);font-size:14px;color:var(--ink);font-weight:600}
+  .agent .meta{font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:3px}
+  .agent p{margin:9px 0 0;font-size:13.5px;color:var(--muted)}
+  /* ---------- rules ---------- */
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.rules{grid-template-columns:1fr}}
+  .rule{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .rule .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 8px}
+  .rule h4{margin:0 0 7px;font-size:16px;letter-spacing:-.01em}
+  .rule p{margin:0;color:var(--muted);font-size:13.5px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--bg);
+    border:1px solid var(--line);border-radius:20px;padding:3px 10px}
+  .rule.always{border-color:rgba(70,224,184,.3)}
+  .rule.always .k{color:var(--mint)}
+  .rule.hard{border-color:rgba(246,184,60,.4)}
+  .rule.hard .k{color:var(--amber)}
+  /* ---------- docs map ---------- */
+  .docs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+  .doc{display:flex;gap:10px;align-items:baseline;background:var(--bg2);border:1px solid var(--line);
+    border-radius:10px;padding:11px 13px}
+  .doc .f{font-family:var(--mono);font-size:12.5px;color:var(--lilac);white-space:nowrap}
+  .doc .d{font-size:12.5px;color:var(--muted)}
+  /* ---------- footer ---------- */
+  .foot{border-top:1px solid var(--line);padding:34px 0 60px;color:var(--faint);font-size:13px}
+  .foot .note{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--amber);
+    border-radius:10px;padding:14px 16px;color:var(--muted);margin-bottom:18px}
+  .foot .note b{color:var(--ink)}
+  .foot .mono{font-family:var(--mono);font-size:12px}
+  /* ---------- reveal + motion ---------- */
+  html.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  html.js .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:no-preference){
+    .pulse{animation:travel 3.4s cubic-bezier(.5,0,.5,1) infinite}
+    @keyframes travel{
+      0%{top:18px;opacity:0}8%{opacity:1}
+      92%{opacity:1}100%{top:calc(100% - 30px);opacity:0}}
+    .loop .dash{stroke-dasharray:5 6;animation:flow 1.1s linear infinite}
+    @keyframes flow{to{stroke-dashoffset:-22}}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html.js .reveal{opacity:1;transform:none;transition:none}
+  }
+  :focus-visible{outline:2px solid var(--lilac);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#topo" class="brand"><b>◆</b> Pipeline · App Template</a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#cadeia">Cadeia</a>
+      <a href="#comecar">Começar</a>
+      <a href="#comandos">Comandos</a>
+      <a href="#subagentes">Subagentes</a>
+      <a href="#regras">Regras</a>
+    </nav>
+  </div>
+</header>
+
+<main id="topo">
+
+  <!-- HERO + CADEIA -->
+  <section class="hero">
+    <div class="wrap herogrid">
+      <div>
+        <p class="eyebrow">Manual do pipeline</p>
+        <h1>Apaixone-se pelo <span class="grad">problema</span>, não pela solução.</h1>
+        <p class="lead">O que sustenta um app não é um PRD estático — é uma <b>cadeia viva</b> que vai da dor ao código, com descoberta contínua no topo. Este é o manual dos comandos, subagentes e regras que fazem essa cadeia andar no Claude Code.</p>
+      </div>
+
+      <!-- A CADEIA ANIMADA (assinatura) -->
+      <div class="chain" id="cadeia" aria-label="A cadeia: Problema, Regras, Specs, Skills e Subagentes, Código">
+        <div class="spine"></div>
+        <div class="pulse" aria-hidden="true"></div>
+        <svg class="loop" viewBox="0 0 30 320" fill="none" aria-hidden="true" preserveAspectRatio="none">
+          <path class="dash" d="M22 300 C2 270, 2 50, 22 20" stroke="#8E7DF4" stroke-width="2"/>
+          <path d="M22 20 l-5 5 M22 20 l5 5" stroke="#8E7DF4" stroke-width="2"/>
+          <text x="0" y="160" transform="rotate(-90 6 160)">descoberta contínua</text>
+        </svg>
+
+        <div class="node reveal">
+          <div class="dot" style="border-color:rgba(246,184,60,.5)">😖</div>
+          <div><span class="tag">raiz</span><h3>Problema</h3><p>A dor que o app resolve — quem sente, evidências, métrica de alívio.</p></div>
+        </div>
+        <div class="node reveal">
+          <div class="dot">📐</div>
+          <div><span class="tag">nasce da dor</span><h3>Regras de negócio</h3><p>O comportamento do app. Surgem da dor e dos aprendizados — não de chute.</p></div>
+        </div>
+        <div class="node reveal">
+          <div class="dot">📄</div>
+          <div><span class="tag">contrato</span><h3>Specs</h3><p>Uma por funcionalidade, rastreável às regras que a sustentam.</p></div>
+        </div>
+        <div class="node reveal">
+          <div class="dot">🧩</div>
+          <div><span class="tag">capacidades</span><h3>Skills &amp; Subagentes</h3><p>Fluxos repetíveis viram skills; trabalho especializado vira subagente.</p></div>
+        </div>
+        <div class="node reveal">
+          <div class="dot" style="border-color:rgba(142,125,244,.5)">⌨️</div>
+          <div><span class="tag">resultado</span><h3>Código</h3><p>Construído enxuto, com âncoras de contexto escritas no ato da criação.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO COMEÇAR -->
+  <section class="section" id="comecar">
+    <div class="wrap">
+      <p class="sec-eyebrow">Roadmap</p>
+      <h2>Como começar um app</h2>
+      <p class="intro">A ordem importa: define-se a base, entende-se a dor, e só então se constrói — em blocos pequenos. Cada passo abaixo é um comando ou um arquivo do template.</p>
+      <div class="road">
+        <div class="step start reveal"><span class="num">0</span><h4>Defina a base</h4><p>Preencha <code>docs/STACK.md</code> (stack completa) e <code>docs/SETUP.md</code> + <code>.env.example</code> (rodar e ambientes). Isso ativa as regras de código certas.</p></div>
+        <div class="step reveal"><span class="num">1</span><h4>Entenda a dor — <code>/problema</code></h4><p>Articule a dor na voz de quem sofre, evidências e a suposição mais arriscada a validar antes de construir.</p></div>
+        <div class="step reveal"><span class="num">2</span><h4>Quebre o objetivo — <code>/dividir</code></h4><p>Marcos → tarefas pequenas com prioridade e critério de sucesso, gravados no <code>TASKS.md</code>.</p></div>
+        <div class="step reveal"><span class="num">3</span><h4>Registre regras — <code>/regra</code></h4><p>Cada regra de negócio é gravada <b>e propaga pela cadeia</b>: propõe specs, regras de código e onde entram âncoras.</p></div>
+        <div class="step reveal"><span class="num">4</span><h4>Formalize — <code>/spec</code></h4><p>Crie a spec da funcionalidade listando as regras (RN-00x) que a sustentam.</p></div>
+        <div class="step reveal"><span class="num">5</span><h4>Construa com âncoras</h4><p>Código enxuto seguindo os princípios e as regras; a LLM deixa âncoras <code>COMENT-AI</code> no ato, só onde há intenção não óbvia.</p></div>
+        <div class="step reveal"><span class="num">6</span><h4>Especialize se preciso — <code>/adicionar-subagente</code></h4><p>Crie um subagente quando faltar um especialista (busca, auditoria…). Não invente o que não serve à dor.</p></div>
+        <div class="step reveal"><span class="num">7</span><h4>Prove — <code>/provar</code></h4><p>O subagente <code>avaliador</code> marca cada critério de aceite (implementado + testado, com arquivo:linha) e dá uma nota. Critério sem teste não passa.</p></div>
+        <div class="step reveal"><span class="num">8</span><h4>Feche coerente — <code>/reconciliar</code> + <code>revisor</code></h4><p>Atualiza o MAPA, valida frontmatter e religa tudo; o <code>revisor</code> confere regras, spec e âncoras antes de concluir.</p></div>
+        <div class="step loopstep reveal"><span class="num">↺</span><h4>Descoberta contínua</h4><p>Aprendeu algo conversando ou medindo? Volta ao <code>/problema</code>. A cadeia é viva.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMANDOS -->
+  <section class="section" id="comandos">
+    <div class="wrap">
+      <p class="sec-eyebrow">Manual de comandos</p>
+      <h2>Os 13 comandos</h2>
+      <p class="intro">Comandos são atalhos que você digita no Claude Code (arquivos em <span class="mono">.claude/commands/</span>). Cada um faz uma coisa e diz quando usar.</p>
+
+      <div class="grouplabel">Descoberta &amp; planejamento</div>
+      <div class="cards">
+        <div class="card reveal"><div class="cmd">/problema <span class="arg">[contexto]</span></div><p class="what">Entende e refina a dor que o app resolve; registra em PROBLEMA.md.</p><p class="when"><b>quando</b> no início e ao aprender algo novo</p><p class="ex">/problema vendedores perdem venda no checkout</p></div>
+        <div class="card reveal"><div class="cmd">/dividir <span class="arg">&lt;objetivo&gt;</span></div><p class="what">Quebra um objetivo grande em marcos e tarefas pequenas com prioridade e critério de sucesso.</p><p class="when"><b>quando</b> antes de construir algo grande</p><p class="ex">/dividir MVP do checkout de uma página</p></div>
+        <div class="card reveal"><div class="cmd">/retomar</div><p class="what">Briefing do que foi feito, estado atual e próximo passo; pergunta "continuar ou começar do zero?".</p><p class="when"><b>quando</b> ao abrir/retomar uma sessão</p></div>
+      </div>
+
+      <div class="grouplabel">Regras &amp; specs</div>
+      <div class="cards">
+        <div class="card reveal"><div class="cmd">/regra <span class="arg">&lt;texto&gt;</span></div><p class="what">Registra uma regra de negócio <b>e propaga pela cadeia</b> (propõe specs, skills, regras de código e âncoras).</p><p class="when"><b>quando</b> sempre que uma regra surgir</p><p class="ex">/regra frete grátis acima de R$200 no Sudeste</p></div>
+        <div class="card reveal"><div class="cmd">/regras <span class="arg">[foco]</span></div><p class="what">O agente aponta lacunas e sugere regras candidatas, com uma pergunta objetiva por regra.</p><p class="when"><b>quando</b> pra fortalecer o norte de uma área</p></div>
+        <div class="card reveal"><div class="cmd">/spec <span class="arg">&lt;funcionalidade&gt;</span></div><p class="what">Cria/atualiza a spec a partir das regras, listando as RN que a sustentam. Casos de borda obrigatórios + cada critério vira um teste.</p><p class="when"><b>quando</b> as regras de uma funcionalidade amadurecem</p><p class="ex">/spec cálculo do total do pedido</p></div>
+        <div class="card reveal"><div class="cmd">/provar <span class="arg">&lt;spec&gt;</span></div><p class="what">Prova que a spec foi cumprida: cada critério implementado <b>e testado</b> (arquivo:linha), com nota.</p><p class="when"><b>quando</b> ao concluir, antes de dar por pronta</p><p class="ex">/provar SPEC-003</p></div>
+      </div>
+
+      <div class="grouplabel">Criação</div>
+      <div class="cards">
+        <div class="card reveal"><div class="cmd">/skill <span class="arg">&lt;p/ quê&gt;</span></div><p class="what">Cria uma skill do projeto (usa a skill-creator quando disponível) e atualiza o MAPA.</p><p class="when"><b>quando</b> um fluxo repetível merece virar skill</p></div>
+        <div class="card reveal"><div class="cmd">/adicionar-subagente <span class="arg">&lt;p/ quê&gt;</span></div><p class="what">Cria um subagente em <span class="mono">.claude/agents/</span> com frontmatter válido (gatilho, ferramentas, modelo).</p><p class="when"><b>quando</b> precisa de um especialista novo</p></div>
+      </div>
+
+      <div class="grouplabel">Coerência &amp; navegação</div>
+      <div class="cards">
+        <div class="card reveal"><div class="cmd">/buscar <span class="arg">&lt;termo&gt;</span></div><p class="what">Busca facilitada no repo; delega ao subagente explorador quando é fundo, pra poupar contexto.</p><p class="when"><b>quando</b> "onde está X?" em projeto grande</p></div>
+        <div class="card reveal"><div class="cmd">/mapa</div><p class="what">Regenera o MAPA.md — o índice de navegação do projeto.</p><p class="when"><b>quando</b> depois de criar ou mover coisas</p></div>
+        <div class="card reveal"><div class="cmd">/reconciliar <span class="arg">[o que mudou]</span></div><p class="what">Após mudanças (até manuais), atualiza o MAPA, valida frontmatter e aponta inconsistências.</p><p class="when"><b>quando</b> depois de editar .claude/ na mão</p></div>
+        <div class="card reveal"><div class="cmd">/custo</div><p class="what">Custo/uso de tokens da sessão e onde se gasta mais — usa o <span class="mono">/usage</span> nativo + <span class="mono">ccusage</span>.</p><p class="when"><b>quando</b> para acompanhar gasto e achar pontos caros</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBAGENTES -->
+  <section class="section" id="subagentes">
+    <div class="wrap">
+      <p class="sec-eyebrow">Especialistas em contexto isolado</p>
+      <h2>Subagentes</h2>
+      <p class="intro">Cada subagente roda no próprio contexto e devolve só o resumo — por isso preservam o contexto principal, essencial quando o projeto cresce. Ficam em <span class="mono">.claude/agents/</span>.</p>
+      <div class="agents">
+        <div class="agent reveal"><div class="name">explorador</div><div class="meta">read-only · modelo haiku</div><p>Localiza e entende coisas no repo e devolve um resumo com os caminhos. Não escreve nada.</p></div>
+        <div class="agent reveal"><div class="name">revisor</div><div class="meta">qualidade · segurança · regras</div><p>Revisa o código antes de concluir e sinaliza violação de regras, âncoras NEVER-ALTER/SECURITY/CRITICAL e critério de aceite sem teste.</p></div>
+        <div class="agent reveal"><div class="name">avaliador</div><div class="meta">prova · nota auditável</div><p>Prova que a spec foi cumprida: marca cada critério (implementado + testado, arquivo:linha) e calcula a nota. Via /provar.</p></div>
+        <div class="agent reveal"><div class="name">advogado-do-problema</div><div class="meta">freio de produto</div><p>Desafia se uma funcionalidade serve à dor validada e aponta suposições não testadas.</p></div>
+        <div class="agent reveal"><div class="name">guardiao</div><div class="meta">sob demanda</div><p>Antes de criar módulo/dependência, checa se é necessário, simples e correto. Alerta ok/cuidado/pare.</p></div>
+        <div class="agent reveal"><div class="name">debatedor</div><div class="meta">anti-loop</div><p>Resolve ambiguidade pesando 2-3 opções; trava de 3 tentativas e então pergunta a você.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGRAS -->
+  <section class="section" id="regras">
+    <div class="wrap">
+      <p class="sec-eyebrow">O que o agente respeita ao construir</p>
+      <h2>Regras &amp; guardrails</h2>
+      <p class="intro">Duas camadas: a <b>macia</b> (instruções que o agente segue — reduzem erro) e a <b>dura</b> (enforcement em <span class="mono">settings.json</span> + hooks — que de fato impede). As duas abaixo.</p>
+      <div class="rules">
+        <div class="rule always reveal"><p class="k">Skill · sempre ativa</p><h4>principios-de-codigo</h4><p>Quatro princípios anti-erro de LLM em código, em vigor o tempo todo.</p><div class="chips"><span class="chip">Pensar antes de codar</span><span class="chip">Simplicidade (YAGNI)</span><span class="chip">Mudanças cirúrgicas</span><span class="chip">Execução orientada a metas</span></div></div>
+        <div class="rule reveal"><p class="k">14 leis · conforme a stack</p><h4>Regras de código</h4><p>Regras de engenharia em <span class="mono">docs/REGRAS-DE-CODIGO.md</span>, cada uma com um gatilho. As que citam tecnologia valem se o app usa aquela stack — senão, vale o princípio.</p><div class="chips"><span class="chip">segurança</span><span class="chip">async</span><span class="chip">erros</span><span class="chip">deps</span><span class="chip">testes</span><span class="chip">REST</span><span class="chip">commits</span><span class="chip">ambientes</span></div></div>
+        <div class="rule reveal"><p class="k">Convenção · no código</p><h4>Comentários âncora COMENT-AI</h4><p>A LLM escreve a âncora <b>no ato da criação</b>, escolhendo o tipo, só onde há intenção não óbvia — pra que a LLM (e o humano) entenda o trecho depois. Não comentar o óbvio.</p><div class="chips"><span class="chip">NOTE</span><span class="chip">SECURITY</span><span class="chip">PERFORMANCE</span><span class="chip">NEVER-ALTER</span><span class="chip">MODIFIED</span></div></div>
+        <div class="rule reveal"><p class="k">Anti-loop · economia de tokens</p><h4>Ambiguidade → quiz</h4><p>Sem caminho ótimo em até 3 tentativas, o agente <b>não fica explorando</b>: monta um <b>quiz de múltipla escolha</b> (opções numeradas) para você escolher antes de gastar tokens. Troca exploração cara por escolha barata.</p></div>
+        <div class="rule always reveal"><p class="k">Sempre · prova</p><h4>Testes não são opcionais</h4><p>Cada <b>critério de aceite</b> da spec vira um <b>teste</b>; um critério só conta como pronto se houver teste que o <b>prove</b> — "parece funcionar" não basta. Ao concluir, <span class="mono">/provar</span> dá a nota (60% implementação + 40% testes).</p><div class="chips"><span class="chip">critério → teste</span><span class="chip">casos de borda obrigatórios</span><span class="chip">/provar</span><span class="chip">nota auditável</span></div></div>
+        <div class="rule reveal"><p class="k">Lições do benchmark</p><h4>Quantifique e enxugue</h4><p>Não deixe decisões à <b>interpretação</b> do agente: gatilhos numéricos ("pare após N"), não "quando achar suficiente" — é o que faz pular casos de borda e testes. E <b>menos arquivos/escopo</b>: cada peça extra custa tokens e aumenta a chance de errar o que construir.</p><div class="chips"><span class="chip">quantificar</span><span class="chip">sem ambiguidade</span><span class="chip">menos arquivos</span><span class="chip">menos custo</span></div></div>
+        <div class="rule hard reveal"><p class="k">Enforcement · não é conselho</p><h4>Camada determinística</h4><p><span class="mono">settings.json</span> nega ler segredos e pede confirmação p/ <span class="mono">git push</span>; o hook <span class="mono">block-dangerous.sh</span> barra comandos destrutivos; o checkpoint aborta se achar segredo no stage. <b>Não é sandbox</b> — é freio para footguns.</p><div class="chips"><span class="chip">rm -rf perigoso</span><span class="chip">curl|sh</span><span class="chip">push --force</span><span class="chip">segredo no commit</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCUMENTOS -->
+  <section class="section">
+    <div class="wrap">
+      <p class="sec-eyebrow">Onde mora cada coisa</p>
+      <h2>Mapa de documentos</h2>
+      <p class="intro">O contexto vive dentro do repo, onde o Claude Code lê sozinho. Comece sempre pelo <span class="mono">MAPA.md</span>.</p>
+      <div class="docs">
+        <div class="doc reveal"><span class="f">PROBLEMA.md</span><span class="d">a dor (raiz da cadeia)</span></div>
+        <div class="doc reveal"><span class="f">REGRAS-DE-NEGOCIO.md</span><span class="d">regras de negócio (autoridade)</span></div>
+        <div class="doc reveal"><span class="f">TASKS.md</span><span class="d">norte + checklist + recuperação</span></div>
+        <div class="doc reveal"><span class="f">PROGRESS.md</span><span class="d">memória: diário com data/hora</span></div>
+        <div class="doc reveal"><span class="f">MAPA.md</span><span class="d">índice de navegação/busca</span></div>
+        <div class="doc reveal"><span class="f">docs/STACK.md</span><span class="d">a stack completa</span></div>
+        <div class="doc reveal"><span class="f">docs/SETUP.md</span><span class="d">rodar + ambientes</span></div>
+        <div class="doc reveal"><span class="f">docs/dados/</span><span class="d">o que guardar/filtrar · IA · LGPD</span></div>
+        <div class="doc reveal"><span class="f">docs/specs/</span><span class="d">specs por funcionalidade</span></div>
+        <div class="doc reveal"><span class="f">docs/decisoes/</span><span class="d">ADRs</span></div>
+        <div class="doc reveal"><span class="f">docs/COMENT-AI.md</span><span class="d">convenção de âncoras</span></div>
+        <div class="doc reveal"><span class="f">docs/REGRAS-DE-CODIGO.md</span><span class="d">14 regras de engenharia</span></div>
+        <div class="doc reveal"><span class="f">.claude/hooks/</span><span class="d">checkpoint (Stop) · retomada (SessionStart) · block-dangerous (PreToolUse)</span></div>
+        <div class="doc reveal"><span class="f">.claude/settings.json</span><span class="d">permissions (nega segredos, confirma push) + hooks</span></div>
+        <div class="doc reveal"><span class="f">.claude/commands/</span><span class="d">os 11 comandos</span></div>
+        <div class="doc reveal"><span class="f">.claude/agents/</span><span class="d">os subagentes</span></div>
+        <div class="doc reveal"><span class="f">.claude/skills/</span><span class="d">skills do projeto</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="foot">
+    <div class="wrap">
+      <div class="note"><b>Honestidade primeiro.</b> A maioria dos comandos e guardrails são <b>instruções</b> que o agente segue (reduzem erro, sem garantia). A camada <b>determinística</b> (<span class="mono">permissions</span> + hook <span class="mono">PreToolUse</span> + scan de segredo no checkpoint) <b>está incluída</b> e de fato impede — mas <b>não é sandbox</b> (um shell determinado pode driblar; o scan é heurístico; funciona melhor com <span class="mono">jq</span>/<span class="mono">python3</span>). Hooks, comandos e subagentes <b>executam ações na sua máquina</b> — revise.</div>
+      <p class="mono">O Claude Code evolui — confirme caminhos e sintaxe em code.claude.com/docs (hooks · slash-commands · sub-agents · skills).</p>
+      <p class="mono">🧠 Modelos &amp; harness: <b>Opus planeja</b> (/spec, /dividir), <b>Sonnet implementa</b> (segue regras/specs). E é o <b>harness deste repo</b> (CLAUDE.md + skills + specs) que faz um modelo bom render — uma boa spec não salva um modelo ruim em seguir regras. Gasto: /custo.</p>
+      <p>Pipeline do App Template · cadeia viva: Problema → Regras → Specs → Skills/Subagentes → Código.</p>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // reveal on scroll (degrada bem sem JS: conteúdo já visível)
+  (function(){
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver'in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
+    },{rootMargin:'0px 0px -8% 0px',threshold:.12});
+    els.forEach(function(e){io.observe(e);});
+  })();
+</script>
+</body>
+</html>
