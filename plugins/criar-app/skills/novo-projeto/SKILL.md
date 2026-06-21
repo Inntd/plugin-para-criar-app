@@ -34,6 +34,9 @@ if [ -d _claude ]; then
   rm -rf _claude
   chmod +x .claude/hooks/*.sh 2>/dev/null || true
 fi
+# Copia o manual HTML da raiz do plugin (fonte única)
+HTML_SRC="$CLAUDE_PLUGIN_ROOT/../../como usar a skill de criacao de app.html"
+[ -f "$HTML_SRC" ] && cp "$HTML_SRC" "./como usar a skill de criacao de app.html" || true
 echo "=== RESULTADO ==="; ls -A
 ```
 
