@@ -7,6 +7,15 @@ Exiba exatamente o texto abaixo, formatado em markdown, sem adicionar nem remove
 
 Comandos são atalhos que você digita no Claude Code (arquivos em `.claude/commands/`). Cada um faz uma coisa e diz quando usar.
 
+## Construção automática
+
+**`/construir [foco]`**
+Lê `PROBLEMA.md`, `REGRAS-DE-NEGOCIO.md`, `STACK.md` e `TASKS.md` já preenchidos e constrói o app automaticamente: gera specs, implementa, cria testes, aciona o revisor e commita. Apresenta o plano antes de codar e pede confirmação.
+_quando_ o contexto está preenchido e você quer construir sem rodar cada comando manualmente
+_ex._ `/construir módulo de autenticação`
+
+---
+
 ## Descoberta & planejamento
 
 **`/problema [contexto]`**
