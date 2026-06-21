@@ -271,6 +271,7 @@ git config --global url.<span class="tok">"https://github.com/"</span>.insteadOf
       <div class="road">
         <div class="step start reveal"><span class="num">0</span><h4>Inicialize o projeto — <code>/criar-app:novo-projeto</code></h4><p>Numa pasta vazia, rode este único comando com prefixo. Ele copia para a pasta <span style="font-family:var(--mono);font-size:.9em">.claude/commands/</span> (15 comandos), <span style="font-family:var(--mono);font-size:.9em">.claude/agents/</span> (6 subagentes), <span style="font-family:var(--mono);font-size:.9em">.claude/skills/</span>, guardrails e os arquivos de estado. Depois disso, tudo funciona sem prefixo.</p></div>
         <div class="step reveal"><span class="num">1</span><h4>Defina a base</h4><p>Preencha <code>docs/STACK.md</code> (stack completa) e <code>docs/SETUP.md</code> + <code>.env.example</code> (rodar e ambientes). Isso ativa as regras de código certas.</p></div>
+        <div class="step reveal" style="border-left:2px solid rgba(70,224,184,.4);padding-left:12px;margin-left:-12px"><span class="num" style="border-color:var(--mint)">⚡</span><h4>Atalho — <code>/construir</code></h4><p>Se <span class="mono">PROBLEMA.md</span>, <span class="mono">REGRAS-DE-NEGOCIO.md</span>, <span class="mono">STACK.md</span> e <span class="mono">TASKS.md</span> já estiverem preenchidos, pule os passos 2–9 e rode <code>/construir</code>. Ele lê tudo, apresenta o plano, pede confirmação e executa specs → código → testes → commit automaticamente.</p></div>
         <div class="step reveal"><span class="num">2</span><h4>Entenda a dor — <code>/problema</code></h4><p>Articule a dor na voz de quem sofre, evidências e a suposição mais arriscada a validar antes de construir.</p></div>
         <div class="step reveal"><span class="num">3</span><h4>Quebre o objetivo — <code>/dividir</code></h4><p>Marcos → tarefas pequenas com prioridade e critério de sucesso, gravados no <code>TASKS.md</code>.</p></div>
         <div class="step reveal"><span class="num">4</span><h4>Registre regras — <code>/regra</code></h4><p>Cada regra de negócio é gravada <b>e propaga pela cadeia</b>: propõe specs, regras de código e onde entram âncoras.</p></div>
@@ -288,12 +289,17 @@ git config --global url.<span class="tok">"https://github.com/"</span>.insteadOf
   <section class="section" id="comandos">
     <div class="wrap">
       <p class="sec-eyebrow">Manual de comandos</p>
-      <h2>Os 15 comandos</h2>
-      <p class="intro">Após rodar <span class="mono">/criar-app:novo-projeto</span>, estes 15 comandos ficam em <span class="mono">.claude/commands/</span> do projeto e funcionam <b>sem prefixo</b>. Cada um faz uma coisa e diz quando usar.</p>
+      <h2>Os 16 comandos</h2>
+      <p class="intro">Após rodar <span class="mono">/criar-app:novo-projeto</span>, estes 16 comandos ficam em <span class="mono">.claude/commands/</span> do projeto e funcionam <b>sem prefixo</b>. Cada um faz uma coisa e diz quando usar.</p>
 
       <div class="grouplabel">Instalação &amp; início</div>
       <div class="cards">
         <div class="card reveal"><div class="cmd">/novo-projeto</div><p class="what">Inicializa o harness na pasta atual: copia arquivos de estado, docs, .claude/ e guardrails. Use via <span class="mono">/criar-app:novo-projeto</span> na primeira vez (antes de existir .claude/commands/).</p><p class="when"><b>quando</b> ao criar um app novo</p></div>
+      </div>
+
+      <div class="grouplabel">Construção automática</div>
+      <div class="cards">
+        <div class="card reveal" style="border-color:rgba(70,224,184,.3)"><div class="cmd">/construir <span class="arg">[foco]</span></div><p class="what">Lê <span class="mono">PROBLEMA.md</span>, <span class="mono">REGRAS-DE-NEGOCIO.md</span>, <span class="mono">STACK.md</span> e <span class="mono">TASKS.md</span> já preenchidos e constrói o app automaticamente: gera specs, implementa, cria testes, aciona <span class="mono">revisor</span> e commita. Apresenta o plano antes de codar e pede confirmação.</p><p class="when"><b>quando</b> o contexto está preenchido e você quer construir sem rodar cada comando manualmente</p><p class="ex">/construir módulo de autenticação</p></div>
       </div>
 
       <div class="grouplabel">Descoberta &amp; planejamento</div>
@@ -384,7 +390,7 @@ git config --global url.<span class="tok">"https://github.com/"</span>.insteadOf
         <div class="doc reveal"><span class="f">docs/REGRAS-DE-CODIGO.md</span><span class="d">14 regras de engenharia</span></div>
         <div class="doc reveal"><span class="f">.claude/hooks/</span><span class="d">checkpoint (Stop) · retomada (SessionStart) · block-dangerous (PreToolUse)</span></div>
         <div class="doc reveal"><span class="f">.claude/settings.json</span><span class="d">permissions (nega segredos, confirma push) + hooks</span></div>
-        <div class="doc reveal"><span class="f">.claude/commands/</span><span class="d">os 15 comandos (instalados pelo /criar-app:novo-projeto)</span></div>
+        <div class="doc reveal"><span class="f">.claude/commands/</span><span class="d">os 16 comandos (instalados pelo /criar-app:novo-projeto)</span></div>
         <div class="doc reveal"><span class="f">.claude/agents/</span><span class="d">os subagentes</span></div>
         <div class="doc reveal"><span class="f">.claude/skills/</span><span class="d">skills do projeto</span></div>
       </div>
