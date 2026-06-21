@@ -14,7 +14,7 @@ Depois de instalado, ficam disponíveis em **qualquer pasta**:
 No Claude Code:
 
 ```
-/plugin marketplace add Inntd/plugin-para-criar-app
+/plugin marketplace add https://github.com/Inntd/plugin-para-criar-app
 /plugin install criar-app@criar-app-marketplace
 ```
 
